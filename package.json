@@ -24,6 +24,7 @@
   },
   "homepage": "https://github.com/tholman/office-simulator#readme",
   "dependencies": {
-    "slackbots": "^1.0.2"
+    "discord.js": "^11.1.0",
+    "dotenv": "^4.0.0"
   }
 }

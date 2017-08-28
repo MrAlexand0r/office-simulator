@@ -2,7 +2,9 @@
  * Bot Manager
  */
 
-var SlackBot = require('slackbots');
+var discord = require('discord.js');
+
+var client = new discord.Client();
 
 var Ticker = require('./helpers/ticker');
 var Office = require('./helpers/office');
@@ -19,14 +21,12 @@ class officeSimulator {
     this.channel = params.channel
     
     // Off while in the plane
-    this.bot = new SlackBot({
-      token: this.token,
-      name: this.name
-    });
+    client.login(this.token);
+    this.bot = client;
 
     bindMethods(this, ['init', 'onTick']);
 
-    this.bot.on('start', this.init);
+    this.bot.on('ready', this.init);
   }
 
   // Initial Announcement
@@ -43,7 +43,7 @@ class officeSimulator {
     this.office = new Office({
       floors: 3,
       hours: {
-        open: 10, // 10
+        open: 8, // 10
         close: 18 // til 6
       },
       objects: {}
@@ -63,9 +63,8 @@ class officeSimulator {
 
   // Speak!
   announce(announcement) {
-    this.bot.postMessageToChannel(this.channel, announcement, {icon_emoji: ':chart_with_downwards_trend:'});
+    this.bot.channels.get(this.channel).send(announcement);
   }
-
 }
 
 module.exports = officeSimulator;
